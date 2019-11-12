@@ -1,0 +1,7 @@
+development:
+  dialect: postgres
+  datasource: host=${DEV_DATABASE_HOST} user=${DEV_DATABASE_USER} password=${DEV_DATABASE_PASSWORD} dbname=${DEV_DATABASE_NAME} port=${DEV_DATABASE_PORT} sslmode=disable
+  dir: migrations
+  table: migrations
+  pool: 5
+
