@@ -1,6 +1,8 @@
 # db-migrate for docker
 
-This is wrap [rubenv/sql-migrate](https://github.com/rubenv/sql-migrate) using docker
+[Docker Hubh](https://hub.docker.com/r/pyar6329/sql-migrate)
+
+This is wrap [rubenv/sql-migrate](https://github.com/rubenv/sql-migrate) using Docker
 
 ## migrate up
 
@@ -60,7 +62,7 @@ $ docker run -d --rm --name "example-postgres" -e "POSTGRES_PASSWORD=postgres" -
 You can run below, and apply migration
 
 ```bash
-$ docker run --rm -v "$(pwd)/dbconfig.yml:/workspace/dbconfig.yml" -v "$(pwd)/migrations:/workspace/migrations" -e "DEV_DATABASE_HOST=host.docker.internal" -e "DEV_DATABASE_USER=postgres" -e "DEV_DATABASE_PASSWORD=postgres" -e "DEV_DATABASE_NAME=example" -e "DEV_DATABASE_PORT=5432" mig:2 up
+$ docker run --rm -v "$(pwd)/dbconfig.yml:/workspace/dbconfig.yml" -v "$(pwd)/migrations:/workspace/migrations" -e "DEV_DATABASE_HOST=host.docker.internal" -e "DEV_DATABASE_USER=postgres" -e "DEV_DATABASE_PASSWORD=postgres" -e "DEV_DATABASE_NAME=example" -e "DEV_DATABASE_PORT=5432" pyar6329/sql-migrate:latest up
 ```
 
 And, check schema;
@@ -75,6 +77,6 @@ Run below command, tables are dropped.
 
 
 ```bash
-$ docker run --rm -v "$(pwd)/dbconfig.yml:/workspace/dbconfig.yml" -v "$(pwd)/migrations:/workspace/migrations" -e "DEV_DATABASE_HOST=host.docker.internal" -e "DEV_DATABASE_USER=postgres" -e "DEV_DATABASE_PASSWORD=postgres" -e "DEV_DATABASE_NAME=example" -e "DEV_DATABASE_PORT=5432" mig:2 down
+$ docker run --rm -v "$(pwd)/dbconfig.yml:/workspace/dbconfig.yml" -v "$(pwd)/migrations:/workspace/migrations" -e "DEV_DATABASE_HOST=host.docker.internal" -e "DEV_DATABASE_USER=postgres" -e "DEV_DATABASE_PASSWORD=postgres" -e "DEV_DATABASE_NAME=example" -e "DEV_DATABASE_PORT=5432" pyar6329/sql-migrate:latest down
 ```
 
