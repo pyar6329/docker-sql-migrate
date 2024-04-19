@@ -1,7 +1,5 @@
 # db-migrate for docker
 
-[Docker Hubh](https://hub.docker.com/r/pyar6329/sql-migrate)
-
 This is wrap [rubenv/sql-migrate](https://github.com/rubenv/sql-migrate) using Docker
 
 ## migrate up
@@ -56,13 +54,33 @@ drop table users;
 Besides, You run PostgreSQL.
 
 ```bash
-$ docker run -d --rm --name "example-postgres" -e "POSTGRES_PASSWORD=postgres" -e "POSTGRES_DB=example" -p "5432:5432" -e "POSTGRES_INITDB_ARGS=--encoding=UTF-8 --locale=C.UTF-8" postgres:12.0
+$ docker run -d \
+    --rm \
+    --name "example-postgres" \
+    -e "POSTGRES_PASSWORD=postgres" \
+    -e "POSTGRES_DB=example" \
+    -p "5432:5432" \
+    -e "POSTGRES_INITDB_ARGS=--encoding=UTF-8 --locale=C.UTF-8" \
+    postgres:14.11
 ```
 
 You can run below, and apply migration
 
 ```bash
-$ docker run --rm -v "$(pwd)/dbconfig.yml:/workspace/dbconfig.yml" -v "$(pwd)/migrations:/workspace/migrations" -e "DEV_DATABASE_HOST=host.docker.internal" -e "DEV_DATABASE_USER=postgres" -e "DEV_DATABASE_PASSWORD=postgres" -e "DEV_DATABASE_NAME=example" -e "DEV_DATABASE_PORT=5432" pyar6329/sql-migrate:latest up
+$ [ "$(uname -s)" = "Linux" ] && export LINUX_ARGS="--add-host=host.docker.internal:host-gateway" || export LINUX_ARGS=""
+
+$ docker run \
+    --rm \
+    -v "$(pwd)/dbconfig.yml:/app/dbconfig.yml" \
+    -v "$(pwd)/migrations:/app/migrations" \
+    -w "/app" \
+    ${LINUX_ARGS} \
+    -e "DEV_DATABASE_HOST=host.docker.internal" \
+    -e "DEV_DATABASE_USER=postgres" \
+    -e "DEV_DATABASE_PASSWORD=postgres" \
+    -e "DEV_DATABASE_NAME=example" \
+    -e "DEV_DATABASE_PORT=5432" \
+    ghcr.io/pyar6329/sql-migrate:1.6.1 up
 ```
 
 And, check schema;
@@ -77,6 +95,19 @@ Run below command, tables are dropped.
 
 
 ```bash
-$ docker run --rm -v "$(pwd)/dbconfig.yml:/workspace/dbconfig.yml" -v "$(pwd)/migrations:/workspace/migrations" -e "DEV_DATABASE_HOST=host.docker.internal" -e "DEV_DATABASE_USER=postgres" -e "DEV_DATABASE_PASSWORD=postgres" -e "DEV_DATABASE_NAME=example" -e "DEV_DATABASE_PORT=5432" pyar6329/sql-migrate:latest down
+$ [ "$(uname -s)" = "Linux" ] && export LINUX_ARGS="--add-host=host.docker.internal:host-gateway" || export LINUX_ARGS=""
+
+$ docker run \
+    --rm \
+    -v "$(pwd)/dbconfig.yml:/app/dbconfig.yml" \
+    -v "$(pwd)/migrations:/app/migrations" \
+    -w "/app" \
+    --add-host=host.docker.internal:host-gateway \
+    -e "DEV_DATABASE_HOST=host.docker.internal" \
+    -e "DEV_DATABASE_USER=postgres" \
+    -e "DEV_DATABASE_PASSWORD=postgres" \
+    -e "DEV_DATABASE_NAME=example" \
+    -e "DEV_DATABASE_PORT=5432" \
+    ghcr.io/pyar6329/sql-migrate:1.6.1 down
 ```
 
