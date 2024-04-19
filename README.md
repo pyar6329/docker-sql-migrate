@@ -19,7 +19,7 @@ development:
   datasource: host=${DEV_DATABASE_HOST} user=${DEV_DATABASE_USER} password=${DEV_DATABASE_PASSWORD} dbname=${DEV_DATABASE_NAME} port=${DEV_DATABASE_PORT} sslmode=disable
   dir: migrations
   table: migrations
-  pool: 5
+  pool: 1
 
 $ cat migrations/20191111184655-create-users.sql
 -- +migrate Up
@@ -102,7 +102,7 @@ $ docker run \
     -v "$(pwd)/dbconfig.yml:/app/dbconfig.yml" \
     -v "$(pwd)/migrations:/app/migrations" \
     -w "/app" \
-    --add-host=host.docker.internal:host-gateway \
+    ${LINUX_ARGS} \
     -e "DEV_DATABASE_HOST=host.docker.internal" \
     -e "DEV_DATABASE_USER=postgres" \
     -e "DEV_DATABASE_PASSWORD=postgres" \
